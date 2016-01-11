@@ -278,7 +278,7 @@ The following observations are made:
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-To analyse activity patterns between weekdays and weekends, a vector is created with the weekday for each value of `date` in `input_activity_data`. A factor variable, `which_day`, is then added to `input_activity_data` indicating whether the date is on a weekday or a weekend
+To analyze the variance between weekdays and weekends, a vector variable is created with the weekday for each value of `date` in `input_activity_data`. A factor variable, `which_day`, is then added to `input_activity_data` indicating whether the date is on a weekday or a weekend
 
 
 ```r
@@ -331,7 +331,7 @@ The data for the first plot is prepared by calculting the mean for the number of
 quest5_weekdays <- ddply(input_activity_data[input_activity_data$which_day == "weekday", ], .(interval), function(set) { mean(set$steps, na.rm = TRUE) })
 ```
 
-`quest5_weekdays`'s variables are renamed to be friendlier:
+`quest5_weekdays`'s variables are renamed to be easier to read:
 
 
 ```r
@@ -345,7 +345,7 @@ The data for the second plot is prepared by calculting the mean for the number o
 quest5_weekends <- ddply(input_activity_data[input_activity_data$which_day == "weekend", ], .(interval), function(set) { mean(set$steps, na.rm = TRUE) })
 ```
 
-`quest5_weekdays`'s variables are renamed to be friendlier:
+`quest5_weekdays`'s variables are renamed to be easier to read:
 
 
 ```r
@@ -361,7 +361,7 @@ plot_weekdays <- ggplot(data = quest5_weekdays) + aes(x = factor(interval), y = 
 plot_weekends <- ggplot(data = quest5_weekends) + aes(x = factor(interval), y = steps, group = 1) + geom_line() + labs(x ="5-minute interval", y = "Average number of steps across weekends") + theme(axis.text.x = element_text(size = 0)) + geom_vline(xintercept= hour_intervals, linetype="dotted") + geom_vline(xintercept= 144, colour = "red") + geom_text(x=144, y = 150, label="12 pm", angle = 90)
 ```
 
-A function (taken from the R Cookbook at http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)) is defined to render both plots:
+I've taken a function from the R Cookbook at http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)) to plot both graphs on one page:
 
 
 ```r

@@ -192,7 +192,7 @@ ggplot(data = quest3_data) + aes(x = factor(interval), y = steps, group = 1) + g
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
-<p>To analyse activity patterns between weekdays and weekends, a vector is created with the weekday for each value of <code>date</code> in <code>input_activity_data</code>. A factor variable, <code>which_day</code>, is then added to <code>input_activity_data</code> indicating whether the date is on a weekday or a weekend</p>
+<p>To analyze the variance between weekdays and weekends, a vector variable is created with the weekday for each value of <code>date</code> in <code>input_activity_data</code>. A factor variable, <code>which_day</code>, is then added to <code>input_activity_data</code> indicating whether the date is on a weekday or a weekend</p>
 <pre class="r"><code>which_day &lt;- weekdays(input_activity_data$date)
 input_activity_data$which_day &lt;- ifelse(which_day == &quot;Saturday&quot; | which_day == &quot;Sunday&quot; , c(&quot;weekend&quot;), c(&quot;weekday&quot;))
 input_activity_data$which_day &lt;- factor(input_activity_data$which_day)</code></pre>
@@ -221,17 +221,17 @@ input_activity_data$which_day &lt;- factor(input_activity_data$which_day)</code>
 </ul>
 <p>The data for the first plot is prepared by calculting the mean for the number of steps for each interval observed over <strong>weekdays</strong>:</p>
 <pre class="r"><code>quest5_weekdays &lt;- ddply(input_activity_data[input_activity_data$which_day == &quot;weekday&quot;, ], .(interval), function(set) { mean(set$steps, na.rm = TRUE) })</code></pre>
-<p><code>quest5_weekdays</code>’s variables are renamed to be friendlier:</p>
+<p><code>quest5_weekdays</code>’s variables are renamed to be easier to read:</p>
 <pre class="r"><code>names(quest5_weekdays) &lt;- c(&quot;interval&quot;, &quot;steps&quot;)</code></pre>
 <p>The data for the second plot is prepared by calculting the mean for the number of steps for each interval observed over <strong>weekdends</strong>:</p>
 <pre class="r"><code>quest5_weekends &lt;- ddply(input_activity_data[input_activity_data$which_day == &quot;weekend&quot;, ], .(interval), function(set) { mean(set$steps, na.rm = TRUE) })</code></pre>
-<p><code>quest5_weekdays</code>’s variables are renamed to be friendlier:</p>
+<p><code>quest5_weekdays</code>’s variables are renamed to be easier to read:</p>
 <pre class="r"><code>names(quest5_weekends) &lt;- c(&quot;interval&quot;, &quot;steps&quot;)</code></pre>
 <p>Both time series chart objects are generated:</p>
 <pre class="r"><code>plot_weekdays &lt;- ggplot(data = quest5_weekdays) + aes(x = factor(interval), y = steps, group = 1) + geom_line() + labs(x =&quot;5-minute interval&quot;, y = &quot;Average number of steps across weekdays&quot;) + theme(axis.text.x = element_text(size = 0)) + geom_vline(xintercept= hour_intervals, linetype=&quot;dotted&quot;) + geom_vline(xintercept= 144, colour = &quot;red&quot;) + geom_text(x=144, y = 150, label=&quot;12 pm&quot;, angle = 90)
 
 plot_weekends &lt;- ggplot(data = quest5_weekends) + aes(x = factor(interval), y = steps, group = 1) + geom_line() + labs(x =&quot;5-minute interval&quot;, y = &quot;Average number of steps across weekends&quot;) + theme(axis.text.x = element_text(size = 0)) + geom_vline(xintercept= hour_intervals, linetype=&quot;dotted&quot;) + geom_vline(xintercept= 144, colour = &quot;red&quot;) + geom_text(x=144, y = 150, label=&quot;12 pm&quot;, angle = 90)</code></pre>
-<p>A function (taken from the R Cookbook at <a href="http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)" class="uri">http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)</a>) is defined to render both plots:</p>
+<p>I’ve taken a function from the R Cookbook at <a href="http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)" class="uri">http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)</a>) to plot both graphs on one page:</p>
 <pre class="r"><code>multiplot &lt;- function(..., plotlist=NULL, cols) {
   require(grid)
   
